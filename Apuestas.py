@@ -1,30 +1,29 @@
-jug1 = 0
-jug2 = 0
-jug3 = 0
-lista = [[100,10,50],[1,30,1500],[200,5,30],["G","P","G"],["P","G","P"],["P","G","G"]]
-lista2 =[0,0,0]
-lista3=[0,1,2]
-f4= filter(lambda x:x, lista[0: int((len(lista)/2))])
-f5= filter(lambda x:x, lista[int((len(lista)/2)):(len(lista)-1)])
-#print f5[0][0]
-for x in lista3:
-    for y in lista3:
-        print f5[x][y]
-        print x,y
-        print lista2
-        if (f5[x][y] == "G"):
-            lista2[y] = lista2[y] + f4[x][y]
+jug=[0,0,0]
+
+lista = [[2,20,15],[4,5,12],[6,0,4],["G","P","G"],["P","G","P"],["P","G","G"]]
+
+apuestas= filter(lambda x:x, lista[0: int((len(lista)/2))])
+resultados= filter(lambda x:x, lista[int((len(lista)/2)):(len(lista))])
+
+def filtrar(resul,n,k):
+    if n<len(jug):
+        if(resul[n]=="G"):
+            jug[n]=jug[n]+apuestas[k][n]
         else:
-            lista2[y] = lista2[y] - f4[x][y]
+            jug[n]=jug[n]-apuestas[k][n]
+        filtrar(resul,n+1,k)
+        
+def operar(x):
+    if x<len(jug):
+        filtrar(resultados[x],0,x)
+        operar(x+1)
+operar(0)
 
-print lista2
+puntaje = [jug[0], jug[1], jug[2]]
+print puntaje
 
+gano = lambda a,b: a if (a > b) else b
+print "Quien gano mas dinero: ",(reduce(gano, puntaje))
 
-f = lambda a,b: a if (a > b) else b
-print "Quien gano mas dinero: ",(reduce(f, lista2))
-
-g = lambda c,d: c if (c < d) else d
-print "Quien perdio mas dinero: ",(reduce(g, lista2))
-print list(f4)
-print list(f5)
-
+perdio = lambda c,d: c if (c < d) else d
+print "Quien perdio mas dinero: ",(reduce(perdio, puntaje))
